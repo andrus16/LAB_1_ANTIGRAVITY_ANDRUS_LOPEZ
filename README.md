@@ -3,13 +3,14 @@
 Un sistema web de aprendizaje y gestión estudiantil interactivo con temática cyberpunk y de Inteligencia Artificial. La plataforma permite a los estudiantes registrarse, cursar módulos educativos de IA, realizar evaluaciones finales de intento único y descargar certificados de aprobación digitales una vez sean aprobados por el administrador.
 ---
 
-## 🔑 Credenciales de Acceso de Prueba (Docente)
+## 🔑 Acceso Directo y Credenciales de Prueba (Docente)
 
-Para facilitar la revisión del evaluador/profesor, se incluye la cuenta de administración por defecto para ingresar a la plataforma:
+Para facilitar la revisión del evaluador/profesor, la plataforma se encuentra desplegada y accesible en internet:
 
-* **URL del Panel Administrador:** `login.php`
-* **Usuario:** `admin`
-* **Contraseña:** `admin123`
+* **Sitio Web Público:** [http://69.55.60.184/](http://69.55.60.184/)
+* **URL de Acceso Administrador:** [http://69.55.60.184/login.php](http://69.55.60.184/login.php)
+* **Usuario de Administrador:** `admin`
+* **Contraseña de Administrador:** `admin123`
 
 ---
 
