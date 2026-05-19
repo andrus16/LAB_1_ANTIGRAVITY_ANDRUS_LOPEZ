@@ -1,0 +1,262 @@
+/* =============================================
+   SISTEMA GLOBAL DE DISEÑO - LABORATORIO IA
+   Paleta: Fondo #0a0b0e | Cyan #00d4ff | Violeta #b026ff | Magenta #ff00c1
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-primary: #0a0b0e;
+    --bg-card: rgba(15, 16, 22, 0.85);
+    --cyan: #00d4ff;
+    --violet: #b026ff;
+    --magenta: #ff00ea;
+    --red: #ff003c;
+    --green: #00ff88;
+    --text-primary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --border-color: rgba(0, 212, 255, 0.2);
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --radius: 16px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-primary);
+    font-family: var(--font-body);
+    color: var(--text-primary);
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Reactivar partículas para la estética cyberpunk */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: block !important;
+}
+
+/* ---- Contenido general ---- */
+.content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+}
+
+/* ---- Encabezados principales ---- */
+h1.site-title {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0, 212, 255, 0.5);
+    margin-bottom: 10px;
+}
+
+h1.page-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--cyan);
+    text-shadow: 0 0 10px var(--cyan), 0 0 20px rgba(0, 212, 255, 0.5);
+    margin-bottom: 25px;
+    z-index: 2;
+    position: relative;
+    text-align: center;
+}
+
+.subtitle {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+}
+
+/* ---- Card / Panel genérico ---- */
+.ia-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.1), 0 0 60px rgba(176, 38, 255, 0.05);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(12px);
+}
+
+/* ---- Formulario base ---- */
+.form-wrap {
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 35px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--violet);
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
+.form-input {
+    width: 100%;
+    padding: 11px 15px;
+    background: rgba(5, 5, 8, 0.85);
+    border: 1px solid rgba(176, 38, 255, 0.35);
+    color: #ffffff;
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    border-radius: 8px;
+    outline: none;
+    transition: var(--transition);
+}
+
+.form-input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.25);
+}
+
+.form-input::placeholder {
+    color: #555;
+}
+
+/* ---- Botón primario ---- */
+.btn-primary {
+    display: inline-block;
+    width: 100%;
+    padding: 13px 20px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.05), rgba(176, 38, 255, 0.05));
+    border: 1.5px solid var(--cyan);
+    color: var(--cyan);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: var(--transition);
+    margin-top: 8px;
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+}
+
+.btn-primary:hover {
+    background: var(--cyan);
+    color: #000000;
+    box-shadow: 0 0 25px var(--cyan);
+    transform: translateY(-1px);
+}
+
+/* Variante violeta */
+.btn-violet {
+    border-color: var(--violet);
+    color: var(--violet);
+    background: linear-gradient(135deg, rgba(176, 38, 255, 0.05), rgba(0, 0, 0, 0.2));
+    box-shadow: 0 0 15px rgba(176, 38, 255, 0.15);
+}
+
+.btn-violet:hover {
+    background: var(--violet);
+    color: #ffffff;
+    box-shadow: 0 0 25px var(--violet);
+}
+
+/* Variante magenta */
+.btn-magenta {
+    border-color: var(--magenta);
+    color: var(--magenta);
+    background: linear-gradient(135deg, rgba(255, 0, 193, 0.05), rgba(0, 0, 0, 0.2));
+    box-shadow: 0 0 15px rgba(255, 0, 193, 0.15);
+}
+
+.btn-magenta:hover {
+    background: var(--magenta);
+    color: #ffffff;
+    box-shadow: 0 0 25px var(--magenta);
+}
+
+/* ---- Alerts / Mensajes ---- */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    margin-bottom: 20px;
+    border-left: 4px solid;
+    position: relative;
+    z-index: 2;
+}
+
+.alert-error {
+    background: rgba(255, 0, 60, 0.08);
+    color: var(--red);
+    border-color: var(--red);
+}
+
+.alert-success {
+    background: rgba(0, 255, 136, 0.08);
+    color: var(--green);
+    border-color: var(--green);
+}
+
+.alert-info {
+    background: rgba(0, 212, 255, 0.08);
+    color: var(--cyan);
+    border-color: var(--cyan);
+}
+
+/* ---- Link de volver ---- */
+.back-link {
+    display: inline-block;
+    color: var(--violet);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    transition: var(--transition);
+}
+
+.back-link:hover {
+    color: var(--cyan);
+    text-shadow: 0 0 6px var(--cyan);
+}
+
+/* ---- Separador ---- */
+.divider {
+    border: none;
+    border-top: 1px solid rgba(176, 38, 255, 0.2);
+    margin: 25px 0;
+}

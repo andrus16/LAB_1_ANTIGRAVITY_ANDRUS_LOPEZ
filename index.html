@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio IA - Bienvenidos</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800;900&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0b0e;
+            color: #e2e8f0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 900px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 1.1fr 0.9fr;
+                gap: 60px;
+            }
+        }
+
+        /* Lado Izquierdo (Hero Intro) */
+        .hero-intro {
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .hero-intro {
+                text-align: left;
+            }
+        }
+
+        .pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.25);
+            color: #00d4ff;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 20px;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .pill-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #00d4ff;
+            border-radius: 50%;
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .main-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            line-height: 1.15;
+            color: #ffffff;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.15);
+        }
+
+        .main-title span {
+            color: #00d4ff;
+            text-shadow: 0 0 15px #00d4ff, 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .hero-desc {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        /* Stats minimalistas */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 25px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #00d4ff;
+            text-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
+        }
+
+        .stat-lbl {
+            font-size: 0.72rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        /* Lado Derecho (Tarjetas de Enlace/Acciones) */
+        .actions-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .action-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 16, 22, 0.75);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+            padding: 20px;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+            border-color: #00d4ff;
+            background: rgba(20, 22, 30, 0.9);
+            box-shadow: 0 12px 25px rgba(0, 212, 255, 0.15);
+        }
+
+        .card-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: all 0.3s;
+        }
+
+        /* Colores específicos de íconos */
+        .ic-registro {
+            background: rgba(0, 212, 255, 0.08);
+            color: #00d4ff;
+        }
+
+        .ic-estudiante {
+            background: rgba(176, 38, 255, 0.08);
+            color: #b026ff;
+        }
+
+        .ic-admin {
+            background: rgba(255, 0, 193, 0.08);
+            color: #ff00c1;
+        }
+
+        /* Hover específico */
+        .action-card:hover .ic-registro {
+            background: #00d4ff;
+            color: #000;
+            box-shadow: 0 0 15px #00d4ff;
+        }
+
+        .action-card:hover .ic-estudiante {
+            background: #b026ff;
+            color: #fff;
+            box-shadow: 0 0 15px #b026ff;
+        }
+
+        .action-card:hover .ic-admin {
+            background: #ff00c1;
+            color: #fff;
+            box-shadow: 0 0 15px #ff00c1;
+        }
+
+        .card-details h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .card-details p {
+            font-size: 0.78rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .arrow-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #111216;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: #888;
+            transition: all 0.3s;
+        }
+
+        .action-card:hover .arrow-box {
+            background: #00d4ff;
+            color: #000000;
+            border-color: #00d4ff;
+            transform: translateX(4px);
+            box-shadow: 0 0 8px #00d4ff;
+        }
+
+        /* Partículas de Fondo */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Partículas de fondo estilo cyberpunk -->
+    <div id="particles-js"></div>
+
+    <div class="container">
+        <!-- Hero Intro (Izquierda) -->
+        <div class="hero-intro">
+            <div class="pill-badge">
+                <span class="pill-dot"></span>
+                ACCESO RESTRINGIDO
+            </div>
+            <h1 class="main-title">LABORATORIO DE <span>APRENDIZAJE</span></h1>
+            <p class="hero-desc">Explora el procesamiento de lenguaje natural, regresión de datos y algoritmos genéticos
+                mediante una plataforma web totalmente interactiva.</p>
+
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-num">4</span>
+                    <span class="stat-lbl">Módulos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">HTML5</span>
+                    <span class="stat-lbl">Tecnología</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-num">100%</span>
+                    <span class="stat-lbl">Interactiva</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tarjetas de Acciones (Derecha) -->
+        <div class="actions-wrapper">
+            <a href="registro.php" class="action-card">
+                <div class="card-left">
+                    <div class="icon-box ic-registro">📝</div>
+                    <div class="card-details">
+                        <h3>Nuevo Registro</h3>
+                        <p>Inscríbete y solicita tu acceso al sistema neuronal.</p>
+                    </div>
+                </div>
+                <div class="arrow-box">→</div>
+            </a>
+
+            <a href="login_estudiante.php" class="action-card">
+                <div class="card-left">
+                    <div class="icon-box ic-estudiante">⚡</div>
+                    <div class="card-details">
+                        <h3>Acceso Estudiante</h3>
+                        <p>Ingresa a realizar tus cursos, demos y exámenes.</p>
+                    </div>
+                </div>
+                <div class="arrow-box">→</div>
+            </a>
+
+            <a href="login.php" class="action-card">
+                <div class="card-left">
+                    <div class="icon-box ic-admin">🔑</div>
+                    <div class="card-details">
+                        <h3>Acceso Administrador</h3>
+                        <p>Gestionar y autorizar solicitudes de ingreso.</p>
+                    </div>
+                </div>
+                <div class="arrow-box">→</div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Cargar particles.js y el script de inicialización -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
