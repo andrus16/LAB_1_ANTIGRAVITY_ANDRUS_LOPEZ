@@ -47,55 +47,49 @@ try {
                     'password' => $random_password
                 ];
 
+                // Hacer la petición HTTP POST de manera nativa usando Sockets raw (inmune a allow_url_fopen y a falta de curl)
+                $parts = parse_url($relay_url);
+                $host = $parts['host'];
+                $path = $parts['path'] ?? '/';
+                $port = ($parts['scheme'] === 'https') ? 443 : 80;
+                $prefix = ($parts['scheme'] === 'https') ? 'ssl://' : '';
+                
+                $post_string = http_build_query($post_data);
+                
+                $fp = @fsockopen($prefix . $host, $port, $errno, $errstr, 12);
                 $response = false;
-                $error_detail = '';
-
-                if (function_exists('curl_init')) {
-                    $ch = curl_init($relay_url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 12);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                        'Bypass-Tunnel-Reminder: true',
-                        'User-Agent: Mozilla/5.0'
-                    ]);
-                    $response = curl_exec($ch);
-                    if ($response === false) {
-                        $error_detail = curl_error($ch);
+                
+                if ($fp) {
+                    $out = "POST $path HTTP/1.1\r\n";
+                    $out .= "Host: $host\r\n";
+                    $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
+                    $out .= "Content-Length: " . strlen($post_string) . "\r\n";
+                    $out .= "Bypass-Tunnel-Reminder: true\r\n";
+                    $out .= "User-Agent: Mozilla/5.0\r\n";
+                    $out .= "Connection: Close\r\n\r\n";
+                    $out .= $post_string;
+                    
+                    fwrite($fp, $out);
+                    
+                    $raw_response = '';
+                    while (!feof($fp)) {
+                        $raw_response .= fgets($fp, 128);
                     }
-                    curl_close($ch);
-                } else {
-                    $options = [
-                        'http' => [
-                            'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
-                                         "Bypass-Tunnel-Reminder: true\r\n" .
-                                         "User-Agent: Mozilla/5.0\r\n",
-                            'method'  => 'POST',
-                            'content' => http_build_query($post_data),
-                            'timeout' => 12,
-                            'ignore_errors' => true
-                        ],
-                        'ssl' => [
-                            'verify_peer' => false,
-                            'verify_peer_name' => false
-                        ]
-                    ];
-                    $context  = stream_context_create($options);
-                    $response = @file_get_contents($relay_url, false, $context);
-                    if ($response === false) {
-                        $error_detail = 'allow_url_fopen desactivado o error de red.';
-                    }
+                    fclose($fp);
+                    
+                    // Extraer solo el cuerpo del HTTP (después de las cabeceras)
+                    $split = explode("\r\n\r\n", $raw_response, 2);
+                    $response = $split[1] ?? false;
                 }
 
                 if ($response === false) {
-                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error de conexión: " . $error_detail . "</span>";
+                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error de conexión con el túnel.</span>";
                 } else {
                     $res_data = json_decode($response, true);
                     if ($res_data && isset($res_data['success']) && $res_data['success'] === true) {
                         $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente.</span>";
                     } else {
-                        $error_msg = $res_data['error'] ?? 'Respuesta no válida del túnel local.';
+                        $error_msg = $res_data['error'] ?? 'Error desconocido en el servidor de correo.';
                         $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $error_msg . "</span>";
                     }
                 }
