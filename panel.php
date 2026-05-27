@@ -60,7 +60,7 @@ try {
                 $response = false;
                 
                 if ($fp) {
-                    $out = "POST $path HTTP/1.1\r\n";
+                    $out = "POST $path HTTP/1.0\r\n";
                     $out .= "Host: $host\r\n";
                     $out .= "Content-Type: application/x-www-form-urlencoded\r\n";
                     $out .= "Content-Length: " . strlen($post_string) . "\r\n";
