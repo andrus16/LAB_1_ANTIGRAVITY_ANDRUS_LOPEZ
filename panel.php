@@ -47,23 +47,35 @@ try {
                     'password' => $random_password
                 ];
 
-                $ch = curl_init($relay_url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-                curl_setopt($ch, CURLOPT_TIMEOUT, 12);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                $response = curl_exec($ch);
-                $curl_error = curl_error($ch);
-                curl_close($ch);
+                $options = [
+                    'http' => [
+                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method'  => 'POST',
+                        'content' => http_build_query($post_data),
+                        'timeout' => 12,
+                        'ignore_errors' => true
+                    ],
+                    'ssl' => [
+                        'verify_peer' => false,
+                        'verify_peer_name' => false
+                    ]
+                ];
+                
+                $context  = stream_context_create($options);
+                $response = @file_get_contents($relay_url, false, $context);
 
-                $res_data = json_decode($response, true);
-                if ($res_data && isset($res_data['success']) && $res_data['success'] === true) {
-                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente (vía Relay).</span>";
+                if ($response === false) {
+                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al conectar con el servidor de correo local.</span>";
                 } else {
-                    $error_msg = $res_data['error'] ?? $curl_error ?? 'Error de conexión con el servidor de correo.';
-                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $error_msg . "</span>";
+                    $res_data = json_decode($response, true);
+                    if ($res_data && isset($res_data['success']) && $res_data['success'] === true) {
+                        $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente (vía Relay).</span>";
+                    } else {
+                        $error_msg = $res_data['error'] ?? 'Error desconocido en el envío.';
+                        $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $error_msg . "</span>";
+                    }
                 }
-            } catch (Exception $e) {
+            } catch (\Throwable $e) {
                 $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $e->getMessage() . "</span>";
             }
 
