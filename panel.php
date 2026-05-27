@@ -93,7 +93,7 @@ try {
                 } else {
                     $res_data = json_decode($response, true);
                     if ($res_data && isset($res_data['success']) && $res_data['success'] === true) {
-                        $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente (vía Relay).</span>";
+                        $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente.</span>";
                     } else {
                         $error_msg = $res_data['error'] ?? 'Respuesta no válida del túnel local.';
                         $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $error_msg . "</span>";
