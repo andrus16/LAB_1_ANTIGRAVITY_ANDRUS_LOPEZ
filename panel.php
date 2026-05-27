@@ -44,8 +44,8 @@ try {
                 $mail->SMTPAuth   = true;
                 $mail->Username   = 'andruslopez88@gmail.com';
                 $mail->Password   = 'ftttchahpskhuiup';
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-                $mail->Port       = 587;
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port       = 465;
                 $mail->Timeout    = 10;
                 $mail->SMTPDebug  = 0;
                 $mail->SMTPOptions = [
@@ -76,7 +76,7 @@ try {
                 $mail->send();
                 $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente.</span>";
             } catch (Exception $e) {
-                $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo.</span>";
+                $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $e->getMessage() . "</span>";
             }
 
         } elseif ($accion === 'rechazar') {
@@ -770,9 +770,9 @@ try {
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script src="script.js"></script>
 <script>
-    // Auto-ocultar flash message después de 6 s
+    // Auto-ocultar flash message después de 60 s
     const flash = document.querySelector('.flash-msg');
-    if (flash) setTimeout(() => flash.style.display = 'none', 6000);
+    if (flash) setTimeout(() => flash.style.display = 'none', 60000);
 </script>
 </body>
 </html>
