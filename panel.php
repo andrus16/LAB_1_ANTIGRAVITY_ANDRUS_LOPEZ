@@ -39,12 +39,26 @@ try {
 
             $mail = new PHPMailer(true);
             try {
-                $mail->isSMTP(); $mail->Host = 'smtp.gmail.com'; $mail->SMTPAuth = true;
-                $mail->Username = 'andruslopez88@gmail.com'; $mail->Password = 'ftttchahpskhuiup';
-                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS; $mail->Port = 587;
-                $mail->setFrom('admin@sistema-ia.com', 'Laboratorio IA');
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'andruslopez88@gmail.com';
+                $mail->Password   = 'ftttchahpskhuiup';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+                $mail->Port       = 587;
+                $mail->Timeout    = 10;
+                $mail->SMTPDebug  = 0;
+                $mail->SMTPOptions = [
+                    'ssl' => [
+                        'verify_peer'       => false,
+                        'verify_peer_name'  => false,
+                        'allow_self_signed' => true
+                    ]
+                ];
+                $mail->setFrom('andruslopez88@gmail.com', 'Laboratorio IA');
                 $mail->addAddress($estudiante_data['email']);
-                $mail->isHTML(true); $mail->CharSet = 'UTF-8';
+                $mail->isHTML(true);
+                $mail->CharSet = 'UTF-8';
                 $mail->Subject = 'Acceso Concedido - Laboratorio IA';
                 $mail->Body = "
                 <div style='background:#050505;color:#e0e0e0;font-family:sans-serif;padding:30px;max-width:500px;border:1px solid #b026ff;border-radius:10px;'>
