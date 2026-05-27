@@ -39,7 +39,22 @@ try {
 
             $mail = new PHPMailer(true);
             try {
-                $mail->isMail();
+                $mail->isSMTP();
+                $mail->Host       = 'smtp.gmail.com';
+                $mail->SMTPAuth   = true;
+                $mail->Username   = 'andruslopez88@gmail.com';
+                $mail->Password   = 'ftttchahpskhuiup';
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+                $mail->Port       = 465;
+                $mail->Timeout    = 10;
+                $mail->SMTPDebug  = 0;
+                $mail->SMTPOptions = [
+                    'ssl' => [
+                        'verify_peer'       => false,
+                        'verify_peer_name'  => false,
+                        'allow_self_signed' => true
+                    ]
+                ];
                 $mail->setFrom('andruslopez88@gmail.com', 'Laboratorio IA');
                 $mail->addAddress($estudiante_data['email']);
                 $mail->isHTML(true);
