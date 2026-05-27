@@ -47,31 +47,55 @@ try {
                     'password' => $random_password
                 ];
 
-                $options = [
-                    'http' => [
-                        'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                        'method'  => 'POST',
-                        'content' => http_build_query($post_data),
-                        'timeout' => 12,
-                        'ignore_errors' => true
-                    ],
-                    'ssl' => [
-                        'verify_peer' => false,
-                        'verify_peer_name' => false
-                    ]
-                ];
-                
-                $context  = stream_context_create($options);
-                $response = @file_get_contents($relay_url, false, $context);
+                $response = false;
+                $error_detail = '';
+
+                if (function_exists('curl_init')) {
+                    $ch = curl_init($relay_url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 12);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                        'Bypass-Tunnel-Reminder: true',
+                        'User-Agent: Mozilla/5.0'
+                    ]);
+                    $response = curl_exec($ch);
+                    if ($response === false) {
+                        $error_detail = curl_error($ch);
+                    }
+                    curl_close($ch);
+                } else {
+                    $options = [
+                        'http' => [
+                            'header'  => "Content-type: application/x-www-form-urlencoded\r\n" .
+                                         "Bypass-Tunnel-Reminder: true\r\n" .
+                                         "User-Agent: Mozilla/5.0\r\n",
+                            'method'  => 'POST',
+                            'content' => http_build_query($post_data),
+                            'timeout' => 12,
+                            'ignore_errors' => true
+                        ],
+                        'ssl' => [
+                            'verify_peer' => false,
+                            'verify_peer_name' => false
+                        ]
+                    ];
+                    $context  = stream_context_create($options);
+                    $response = @file_get_contents($relay_url, false, $context);
+                    if ($response === false) {
+                        $error_detail = 'allow_url_fopen desactivado o error de red.';
+                    }
+                }
 
                 if ($response === false) {
-                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al conectar con el servidor de correo local.</span>";
+                    $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error de conexión: " . $error_detail . "</span>";
                 } else {
                     $res_data = json_decode($response, true);
                     if ($res_data && isset($res_data['success']) && $res_data['success'] === true) {
                         $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--green);font-size:0.8rem;'>✓ Correo enviado correctamente (vía Relay).</span>";
                     } else {
-                        $error_msg = $res_data['error'] ?? 'Error desconocido en el envío.';
+                        $error_msg = $res_data['error'] ?? 'Respuesta no válida del túnel local.';
                         $success = "Estudiante #$id aprobado. Usuario: <b>$username_generado</b> | Contraseña: <b>$random_password</b> &nbsp;<span style='color:var(--red);font-size:0.8rem;'>✗ Error al enviar correo: " . $error_msg . "</span>";
                     }
                 }
